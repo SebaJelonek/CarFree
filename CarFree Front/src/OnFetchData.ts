@@ -1,11 +1,21 @@
 interface PostBody {
-  body: {
-    brand: string;
-    milage: number;
-    model: string;
-    year: number;
-    companyDate: Date;
-  };
+  body:
+    | {
+        brand: string;
+        milage: number;
+        model: string;
+        year: number;
+        companyDate: Date;
+      }
+    | {
+        name: string;
+        email: string;
+        password: string;
+      }
+    | {
+        email: string;
+        password: string;
+      };
 }
 
 const onPost = async (
@@ -28,7 +38,7 @@ const onPost = async (
     return response();
   };
   const data = await fetchFunction();
-  return data.message;
+  return data;
 };
 
 const onGet = async (url: string, event?: React.FormEvent<HTMLFormElement>) => {

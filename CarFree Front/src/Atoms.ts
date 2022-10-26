@@ -16,4 +16,9 @@ const carListAtom = atom([
   },
 ]);
 
-export { carListAtom };
+const messageAtom = atom('');
+const isLoggedInAtom = atom(false);
+const enableAtom = atom(false);
+const titleAtom = atom('');
+
+export { carListAtom, messageAtom, isLoggedInAtom, enableAtom, titleAtom };
