@@ -1,8 +1,24 @@
-import { Schema, model } from 'mongoose';
+import { Model, Schema, model } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
 import bcrypt from 'bcrypt';
 
-const UserSchame = new Schema({
+interface IUser {
+  fullName: string;
+  email: string;
+  password: string;
+  createDate: Date;
+}
+
+interface UserModel extends Model<IUser> {
+  login(email: string, password: string): IUser;
+}
+
+// const schema = new Schema({ name: String });
+// schema.static('myStaticMethod', function myStaticMethod() {
+//   return 42;
+// });
+
+const UserSchame = new Schema<IUser, UserModel>({
   fullName: { type: String, required: true },
   email: {
     type: String,
@@ -22,6 +38,21 @@ UserSchame.pre('save', async function (next: any) {
   next();
 });
 
-const User = model('user', UserSchame);
+UserSchame.statics.login = async function (email: string, password: string) {
+  const user = await this.findOne({ email });
+  const message = 'Wrong email or password';
+
+  if (user === null) {
+    return message;
+  } else {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+  }
+  return message;
+};
+
+const User = model<IUser, UserModel>('User', UserSchame);
 
 export default User;

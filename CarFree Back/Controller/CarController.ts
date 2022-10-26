@@ -2,8 +2,6 @@ import Car from '../Model/Car';
 
 const newCar = async (req: any, res: any) => {
   const car = req.body.body;
-  console.log(car);
-
   try {
     await Car.create(car);
     res.json({ message: 'Car added to database', status: 200 });
