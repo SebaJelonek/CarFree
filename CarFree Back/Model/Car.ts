@@ -20,6 +20,8 @@ const CarSchema = new Schema({
 });
 
 CarSchema.pre('save', function (next: any) {
+  console.log('this: ', this);
+
   const date = new Date();
   this.updateDates.push(date);
   const carYear = this.year;
@@ -31,12 +33,6 @@ CarSchema.pre('save', function (next: any) {
   } else {
     next();
   }
-});
-
-CarSchema.pre('updateOne', function (next: any) {
-  const date = new Date();
-  this.updateDates.push(date);
-  next();
 });
 
 const Car = model('car', CarSchema);
