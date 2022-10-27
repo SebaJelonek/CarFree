@@ -16,7 +16,7 @@ const Navigation: React.FC = () => {
           <Routes>
             <Route path='/' element={<Index />} />
             <Route path='/add-new-car' element={<AddCar />} />
-            <Route path='/pen' element={<CarList />} />
+            <Route path='/cars' element={<CarList />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             {/* <Route path='/add-pen' element={<AddPenPage />} />

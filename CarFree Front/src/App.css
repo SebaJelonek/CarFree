@@ -3,7 +3,22 @@
   margin: 0 auto;
   text-align: center;
 }
-
+.filter-blue {
+  filter: invert(83%) sepia(5%) saturate(763%) hue-rotate(316deg)
+    brightness(103%) contrast(115%);
+}
+.filter-red {
+  filter: invert(80%) sepia(16%) saturate(1151%) hue-rotate(179deg)
+    brightness(106%) contrast(98%);
+}
+.filter-red:hover {
+  filter: invert(14%) sepia(90%) saturate(4061%) hue-rotate(359deg)
+    brightness(107%) contrast(109%);
+}
+.filter-blue:hover {
+  filter: invert(60%) sepia(100%) saturate(522%) hue-rotate(146deg)
+    brightness(103%) contrast(87%);
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

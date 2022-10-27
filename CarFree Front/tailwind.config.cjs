@@ -7,6 +7,7 @@ module.exports = {
         0.55: '0.525rem',
         16.5: '4.125rem',
         76: '19rem',
+        '1/5': '20%',
       },
       transitionDuration: {
         250: '250ms',
