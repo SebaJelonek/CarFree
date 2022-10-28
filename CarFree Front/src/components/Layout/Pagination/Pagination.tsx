@@ -7,7 +7,6 @@ interface Props {
 
 const Pagination: React.FC<Props> = ({ numberOfPages, setCurrentPage }) => {
   let array = [];
-  console.log(numberOfPages);
 
   for (let index = 1; index <= numberOfPages; index++) {
     array.push(index);

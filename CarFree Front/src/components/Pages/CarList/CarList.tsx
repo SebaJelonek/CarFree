@@ -22,9 +22,11 @@ const editHandler = async (
   car: CarArrayType['newCar'],
   _id: string
 ) => {
+  console.log(car);
+
   const response = await onPost(
     event,
-    `https://carfree.onrender.com/api/car/update/${_id}`,
+    `http://localhost:1337/api/car/update/${_id}`,
     car
   );
   return response;
@@ -67,8 +69,12 @@ const CarList: React.FC = () => {
     toggle('false');
     const response = editHandler(event, car, _id);
     response.then((res) => {
-      setCarList(res.carList);
-      setMessage(res.message);
+      if (res.status === 200) {
+        setCarList(res.carList);
+        setMessage(res.message);
+      } else if (res.status === 400) {
+        setMessage(res.message + '\n' + res.newCar);
+      }
     });
   };
 
