@@ -1,35 +1,53 @@
 import User from '../Model/User';
+import bcrypt from 'bcrypt';
 
 const login = async (req: any, res: any) => {
-  const { email, password } = req.body.body;
+  const { email, password } = req.body;
+  const message = 'Wrong email or password';
   const user = await User.login(email, password);
+  if (user) {
+    const loggedInfo = await bcrypt.hash(user.toString(), 10);
+    const isLogged = true;
+    res.json({
+      message: 'Logged in successfully',
+      loggedInfo,
+      fullName: user.fullName,
+      email,
+      isLogged,
+      status: 200,
+    });
+  } else {
+    res.status(400).json({ message, status: 400 });
+  }
 };
 
 const register = async (req: any, res: any) => {
   let isLogged: boolean = false;
-  const { body } = req.body;
-  console.log(body);
+  const { body } = req;
 
   try {
     const user = await User.create(body);
     if (user) {
       const { fullName, email, password } = user;
-      const userLogged = await User.login(email, password);
-      userLogged && (isLogged = true);
 
+      isLogged = true;
+      const loggedInfo = await bcrypt.hash(user.toString(), 10);
       res.json({
         message: 'Account has been created',
+        loggedInfo,
         fullName,
         email,
         isLogged,
+        status: 200,
       });
     }
   } catch (error) {
     console.log('error: ', error);
     if (error?.toString().includes('E11000 duplicate key error collection')) {
-      res
-        .status(400)
-        .json({ message: `Email '${body.email}' is already in use` });
+      res.status(400).json({
+        message: `Email '${body.email}' is already in use`,
+        status: 400,
+      });
     }
   }
 };

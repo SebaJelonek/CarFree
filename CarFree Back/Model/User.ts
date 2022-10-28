@@ -40,17 +40,16 @@ UserSchame.pre('save', async function (next: any) {
 
 UserSchame.statics.login = async function (email: string, password: string) {
   const user = await this.findOne({ email });
-  const message = 'Wrong email or password';
 
   if (user === null) {
-    return message;
+    return null;
   } else {
     const auth = await bcrypt.compare(password, user.password);
     if (auth) {
       return user;
     }
   }
-  return message;
+  return null;
 };
 
 const User = model<IUser, UserModel>('User', UserSchame);

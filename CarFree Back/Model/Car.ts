@@ -4,8 +4,8 @@ const CarSchema = new Schema({
   brand: { type: String, required: true },
   model: { type: String, required: true },
   year: { type: Number, required: true },
-  milage: { type: Number, required: true },
   companyDate: { type: Date, required: true },
+  milage: { type: Number, required: true },
   createDate: { type: Date, default: Date.now() },
   updateDates: { type: [Date], required: true },
 
@@ -20,8 +20,6 @@ const CarSchema = new Schema({
 });
 
 CarSchema.pre('save', function (next: any) {
-  console.log('this: ', this);
-
   const date = new Date();
   this.updateDates.push(date);
   const carYear = this.year;
