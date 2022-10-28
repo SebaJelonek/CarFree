@@ -5,6 +5,7 @@ import { onGet, onPost } from '../../../OnFetchData';
 import DisplayCars from '../../Layout/DisplayCars/DisplayCars';
 import DeleteCar from '../../Layout/DeleteCar/DeleteCar';
 import EditCar from '../../Layout/EditCar/EditCar';
+import Pagination from '../../Layout/Pagination/Pagination';
 
 interface Types {
   active: 'delete' | 'edit' | 'false';
@@ -32,9 +33,17 @@ const CarList: React.FC = () => {
   const [_id, setId] = useState('');
   const [carList, setCarList] = useAtom(carListAtom);
   const [message, setMessage] = useState('');
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const elementsPerPage = 10;
   let arrayLength = carList.length;
-  let firstArray = carList.slice(0, arrayLength / 2);
-  let secondArray = carList.slice(arrayLength / 2, arrayLength);
+  const numberOfPages = Math.ceil(arrayLength / elementsPerPage);
+  const indexOfLastProduct = currentPage * elementsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - elementsPerPage;
+  const cars = carList.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  let firstArray = cars.slice(0, arrayLength / 2);
+  let secondArray = cars.slice(arrayLength / 2, arrayLength);
 
   useEffect(() => {
     onGet('http://localhost:1337/api/car-list').then(({ carList }) => {
@@ -73,6 +82,10 @@ const CarList: React.FC = () => {
         <DisplayCars toggle={toggle} setId={setId} carArray={secondArray} />
         <DisplayCars toggle={toggle} setId={setId} carArray={firstArray} />
       </div>
+      <Pagination
+        numberOfPages={numberOfPages}
+        setCurrentPage={setCurrentPage}
+      />
       {active === 'delete' && <DeleteCar onDelete={onDelete} toggle={toggle} />}
       {active === 'edit' && (
         <EditCar

@@ -46,7 +46,7 @@ const DisplayCars: React.FC<Props> = ({ carArray, setId, toggle }) => {
 
   return (
     <div className='w-full'>
-      {carArray.map(({ _id, brand, model }) => (
+      {carArray.map(({ _id, brand, model, milage, year }) => (
         <Card width='w-4/5' key={_id}>
           <div className='flex justify-end'>
             {isLoggedIn ? (
@@ -73,8 +73,14 @@ const DisplayCars: React.FC<Props> = ({ carArray, setId, toggle }) => {
               <div className='h-[27.4px]'></div>
             )}
           </div>
-          <h1>{brand}</h1>
-          <h2>{model}</h2>
+          <div className='flex justify-center'>
+            <h2 className='text-2xl mx-4 border-b-2'>{brand}</h2>
+            <h2 className='text-2xl mx-4 border-b-2'>{model}</h2>
+          </div>
+          <div className='flex justify-center mt-6'>
+            <h3 className=' text-xl mx-4 border-b-2'>Przebieg: {milage}km</h3>
+            <h3 className=' text-xl mx-4 border-b-2'>Rocznik: {year}</h3>
+          </div>
         </Card>
       ))}
     </div>
