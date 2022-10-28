@@ -14,7 +14,9 @@
   "description": "backend api",
   "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -b"
+
   },
   "author": "Sebastian Jelonek",
   "license": "ISC",
