@@ -65,7 +65,7 @@ const AddCar: React.FC = () => {
   return (
     <div>
       <Form
-        url='https://carfree.onrender.com/api/car/new'
+        url='https://carfree-back.onrender.com/api/car/new'
         type='POST'
         body={body}
       >

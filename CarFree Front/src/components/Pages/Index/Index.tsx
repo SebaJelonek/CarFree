@@ -1,6 +1,5 @@
 import { useAtom } from 'jotai';
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { isLoggedInAtom, messageAtom } from '../../../Atoms';
 
 const Index: React.FC = () => {
