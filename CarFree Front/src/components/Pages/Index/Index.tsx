@@ -11,15 +11,6 @@ const Index: React.FC = () => {
     <div>
       <h1>INDEX</h1>
       {isLogged && <h3>{message}</h3>}
-      <h1>
-        zapytanie o pojemnik blender{' '}
-        <a
-          target='_blank'
-          href='http://www.kerchelectronics.pl/home/kontakt-firmy/'
-        >
-          kerch
-        </a>
-      </h1>
     </div>
   );
 };
