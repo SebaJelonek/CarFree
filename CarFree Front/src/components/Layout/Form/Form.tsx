@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { enableAtom, messageAtom, titleAtom } from '../../../Atoms';
+import {
+  enableAtom,
+  isLoggedInAtom,
+  messageAtom,
+  nameAtom,
+  titleAtom,
+  CarArrayType,
+} from '../../../Atoms';
 import { onPost, onGet } from '../../../OnFetchData';
 import Button from '../Button/Button';
 import Message from '../Message/Message';
@@ -10,13 +17,7 @@ interface Props {
   type: 'GET' | 'POST';
   url: string;
   body?:
-    | {
-        brand: string;
-        milage: number;
-        model: string;
-        year: number;
-        companyDate: Date;
-      }
+    | CarArrayType['newCar']
     | {
         name: string;
         email: string;
@@ -29,12 +30,12 @@ interface Props {
 }
 
 const Form: React.FC<Props> = ({ children, body, type, url }) => {
-  const [message, setMessage] = useAtom(messageAtom);
+  const [, setIsLogged] = useAtom(isLoggedInAtom);
+  const [, setMessage] = useAtom(messageAtom);
   const [title] = useAtom(titleAtom);
   const [enabled] = useAtom(enableAtom);
+  const [, setName] = useAtom(nameAtom);
   const [count, setCount] = useState(0);
-
-  useEffect(() => {}, [message]);
 
   const onSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,7 +45,17 @@ const Form: React.FC<Props> = ({ children, body, type, url }) => {
         setMessage(data.message);
       } else if (type === 'POST' && body !== undefined) {
         const data = await onPost(event, url, body);
-        setMessage(data.message);
+        if (data.status === 200) {
+          if (data.isLogged) {
+            setMessage(data.message);
+            setIsLogged(data.isLogged);
+            setName(data.fullName);
+          } else {
+            setMessage(data.message);
+          }
+        } else if (data.status === 400) {
+          setMessage(data.message);
+        }
       }
     } else {
       setCount(count + 1);

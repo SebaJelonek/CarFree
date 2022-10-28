@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { messageAtom } from '../../../Atoms';
 
@@ -11,10 +11,10 @@ const Message: React.FC = () => {
     }, 3000);
   }, [message]);
 
-  return message !== '' ? (
-    <div className='h-4'>{message}</div>
-  ) : (
-    <div className='h-4'></div>
+  return (
+    <div className='h-4'>
+      <h3 className={`text-4xl text-red-700 `}>{message}</h3>
+    </div>
   );
 };
 

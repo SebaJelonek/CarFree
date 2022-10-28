@@ -60,9 +60,17 @@ interface CarArrayType {
 // -------- ATOMS -------- //
 const carListAtom = atom(carArray);
 const messageAtom = atom('');
-const isLoggedInAtom = atom(true);
+const isLoggedInAtom = atom(false);
 const enableAtom = atom(false);
 const titleAtom = atom('');
+const nameAtom = atom('');
 
-export { carListAtom, messageAtom, isLoggedInAtom, enableAtom, titleAtom };
+export {
+  carListAtom,
+  messageAtom,
+  isLoggedInAtom,
+  enableAtom,
+  titleAtom,
+  nameAtom,
+};
 export type { CarArrayType };

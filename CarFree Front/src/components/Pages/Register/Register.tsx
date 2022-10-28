@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { enableAtom, messageAtom, titleAtom } from '../../../Atoms';
+import { enableAtom, isLoggedInAtom, titleAtom } from '../../../Atoms';
 import Form from '../../Layout/Form/Form';
 import InputField from '../../Layout/InputField/InputField';
+import { useNavigate } from 'react-router-dom';
+
+const passwordRegEx = RegExp(
+  '(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}'
+);
 
 const Register: React.FC = () => {
   const [, setTitle] = useAtom(titleAtom);
-  const [, setMessage] = useAtom(messageAtom);
   const [, toggle] = useAtom(enableAtom);
+  const [isLogged] = useAtom(isLoggedInAtom);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,11 +23,20 @@ const Register: React.FC = () => {
     password,
   });
 
+  const location = useNavigate();
+
+  useEffect(() => {
+    if (isLogged === true) {
+      location('/');
+    }
+  }, [isLogged]);
+
   useEffect(() => {
     setBody({ fullName, email, password });
+
     if (
       fullName !== '' &&
-      password.length >= 6 &&
+      passwordRegEx.test(password) &&
       passwordCheck === password &&
       email.length < 250 &&
       email.includes('@')
@@ -31,8 +45,10 @@ const Register: React.FC = () => {
     } else if (fullName === '') {
       setTitle('Name can not be empty');
       toggle(false);
-    } else if (password.length < 6) {
-      setTitle('Password has to be at least 6 characters long');
+    } else if (!passwordRegEx.test(password)) {
+      setTitle(
+        'Password has to be at least 6 characters long has to include one digit and one special character'
+      );
       toggle(false);
     } else if (passwordCheck !== password) {
       setTitle('Passwords do not match');

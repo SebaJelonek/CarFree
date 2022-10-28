@@ -29,7 +29,7 @@ interface Props {
 }
 
 const DisplayCars: React.FC<Props> = ({ carArray, setId, toggle }) => {
-  const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom);
+  const [isLoggedIn] = useAtom(isLoggedInAtom);
   const clickHandler = (event: any) => {
     const title = event.currentTarget.title;
     // editHandler(event);

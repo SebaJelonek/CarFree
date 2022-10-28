@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { carListAtom, CarArrayType } from '../../../Atoms';
+import { carListAtom, CarArrayType, messageAtom } from '../../../Atoms';
 import { onGet, onPost } from '../../../OnFetchData';
 import DisplayCars from '../../Layout/DisplayCars/DisplayCars';
 import DeleteCar from '../../Layout/DeleteCar/DeleteCar';
@@ -31,7 +31,7 @@ const CarList: React.FC = () => {
   const [active, toggle] = useState<Types['active']>('false');
   const [_id, setId] = useState('');
   const [carList, setCarList] = useAtom(carListAtom);
-
+  const [message, setMessage] = useState('');
   let arrayLength = carList.length;
   let firstArray = carList.slice(0, arrayLength / 2);
   let secondArray = carList.slice(arrayLength / 2, arrayLength);
@@ -53,11 +53,19 @@ const CarList: React.FC = () => {
     event: React.FormEvent<HTMLFormElement>,
     car: CarArrayType['newCar']
   ) => {
+    toggle('false');
     const response = editHandler(event, car, _id);
     response.then((res) => {
       setCarList(res.carList);
+      setMessage(res.message);
     });
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage('');
+    }, 3000);
+  }, [message]);
 
   return (
     <div>
@@ -72,6 +80,14 @@ const CarList: React.FC = () => {
           toggle={toggle}
           car={carList.filter((car) => car._id === _id)[0]}
         />
+      )}
+      {message !== '' && (
+        <div
+          onClick={() => setMessage('')}
+          className='absolute flex w-full h-full left-0 top-0 bg-slate-900'
+        >
+          <h1 className='m-auto'>{message}</h1>
+        </div>
       )}
     </div>
   );

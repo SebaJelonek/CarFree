@@ -1,5 +1,7 @@
+import { useAtom } from 'jotai';
 import React, { useState } from 'react';
-import { CarArrayType } from '../../../Atoms';
+import { CarArrayType, messageAtom } from '../../../Atoms';
+import Message from '../Message/Message';
 
 interface Props {
   toggle: React.Dispatch<React.SetStateAction<'edit' | 'delete' | 'false'>>;
@@ -17,25 +19,47 @@ const h5_l = 'text-2xl mb-6 text-left';
 const EditCar: React.FC<Props> = ({ toggle, onEdit, car }) => {
   const { brand, year, model, milage, createDate } = car;
 
+  const [, setMessage] = useAtom(messageAtom);
+
   const [newBrand, setNewBrand] = useState('');
   const [newModel, setNewModel] = useState('');
   const [newYear, setNewYear] = useState(year);
   const [newMilage, setNewMilage] = useState(milage);
   const [newDate, setNewDate] = useState('');
 
+  const now = new Date(Date.now());
   const companyDate = new Date(newDate);
 
   const newCar: CarArrayType['newCar'] = {
     brand: newBrand,
-    year: newYear,
-    model: newModel,
     milage: newMilage,
+    model: newModel,
+    year: newYear,
     companyDate,
   };
 
   const onSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
-    onEdit(event, newCar);
-    toggle('false');
+    event.preventDefault();
+    const currentYear = new Date(Date.now()).getFullYear();
+    if (
+      newBrand === '' &&
+      newModel === '' &&
+      companyDate.toString() === 'Invalid Date' &&
+      newYear === year &&
+      newMilage === milage
+    ) {
+      setMessage('Musisz zmienić przynajmniej jedną wartość');
+    } else if (newYear > currentYear) {
+      setMessage('Rok produkcji nie moze byc wyzszy niz aktualny');
+    } else if (newYear < 1900) {
+      setMessage('Rok produkcji musi byc wyzszy niz 1899');
+    } else if (companyDate.getTime() > now.getTime()) {
+      setMessage('Czas wprowadzenia nie moze byc wyzszy niz czas aktualny');
+    } else if (companyDate.getTime() < -3600000) {
+      setMessage('Czas wprowadzenia nie moze być niższy niż 01.01.1970 00:00');
+    } else if (milage < 0) {
+      setMessage('Przebieg nie moze byc ujemny');
+    } else onEdit(event, newCar);
   };
 
   const newBrandHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +124,7 @@ const EditCar: React.FC<Props> = ({ toggle, onEdit, car }) => {
               <input
                 onChange={newDateHandler}
                 value={newDate}
-                type='date'
+                type='datetime-local'
                 id='data'
               />
             </div>
@@ -109,6 +133,7 @@ const EditCar: React.FC<Props> = ({ toggle, onEdit, car }) => {
               Anuluj
             </button>
           </form>
+          <Message />
         </div>
         <div className='bg-[#0e2f2480] w-4'></div>
         <div className='w-8/12 text-cyan-50 p-20 rounded-lg bg-[#0e2f24db]'>

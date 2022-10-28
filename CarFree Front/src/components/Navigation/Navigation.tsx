@@ -1,5 +1,7 @@
+import { useAtom } from 'jotai';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { isLoggedInAtom } from '../../Atoms';
 import AddCar from '../Pages/AddCar/AddCar';
 import CarList from '../Pages/CarList/CarList';
 import Index from '../Pages/Index/Index';
@@ -19,9 +21,6 @@ const Navigation: React.FC = () => {
             <Route path='/cars' element={<CarList />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
-            {/* <Route path='/add-pen' element={<AddPenPage />} />
-          <Route path='/cart' element={<BasketPage />} />
-          <Route path='/order' element={<OrderPage />} /> */}
           </Routes>
         </div>
       </Router>

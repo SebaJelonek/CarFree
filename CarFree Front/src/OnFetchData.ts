@@ -31,7 +31,7 @@ const onPost = async (
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         mode: 'cors',
-        body: JSON.stringify({ body }),
+        body: JSON.stringify(body),
       });
       return data.json();
     };
