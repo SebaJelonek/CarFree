@@ -42,13 +42,10 @@ const register = async (req: any, res: any) => {
       });
     }
   } catch (error) {
-    console.log('error: ', error);
-    if (error?.toString().includes('E11000 duplicate key error collection')) {
-      res.status(400).json({
-        message: `Email '${body.email}' is already in use`,
-        status: 400,
-      });
-    }
+    res.status(400).json({
+      message: `Email '${body.email}' is already in use`,
+      status: 400,
+    });
   }
 };
 

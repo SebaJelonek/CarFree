@@ -15,7 +15,8 @@
   "main": "app.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install && tsc -b"
+    "build": "npm install && tsc -b",
+    "devBuild":"tsc -b"
 
   },
   "author": "Sebastian Jelonek",
