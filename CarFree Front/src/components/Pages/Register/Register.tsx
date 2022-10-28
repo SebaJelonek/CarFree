@@ -65,7 +65,11 @@ const Register: React.FC = () => {
   useEffect(() => () => setBody({ fullName: '', email: '', password: '' }), []);
 
   return (
-    <Form url='http://localhost:1337/api/user/new' type='POST' body={body}>
+    <Form
+      url='https://carfree.onrender.com/api/user/new'
+      type='POST'
+      body={body}
+    >
       <InputField
         id='name'
         label='Imię'

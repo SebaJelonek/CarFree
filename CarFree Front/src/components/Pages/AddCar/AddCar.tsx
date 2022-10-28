@@ -64,7 +64,11 @@ const AddCar: React.FC = () => {
 
   return (
     <div>
-      <Form url='http://localhost:1337/api/car/new' type='POST' body={body}>
+      <Form
+        url='https://carfree.onrender.com/api/car/new'
+        type='POST'
+        body={body}
+      >
         <InputField
           label='brand'
           id='brand-input'

@@ -43,7 +43,11 @@ const Login: React.FC = () => {
 
   return (
     <div>
-      <Form url='http://localhost:1337/api/user/login' type='POST' body={body}>
+      <Form
+        url='https://carfree.onrender.com/api/user/login'
+        type='POST'
+        body={body}
+      >
         <InputField
           id='email'
           label='E-mail'

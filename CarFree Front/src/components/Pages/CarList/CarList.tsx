@@ -12,7 +12,9 @@ interface Types {
 }
 
 const deleteHandler = async (_id: string) => {
-  const response = await onGet(`http://localhost:1337/api/car/delete/${_id}`);
+  const response = await onGet(
+    `https://carfree.onrender.com/api/car/delete/${_id}`
+  );
 };
 
 const editHandler = async (
@@ -22,7 +24,7 @@ const editHandler = async (
 ) => {
   const response = await onPost(
     event,
-    `http://localhost:1337/api/car/update/${_id}`,
+    `https://carfree.onrender.com/api/car/update/${_id}`,
     car
   );
   return response;
@@ -46,7 +48,7 @@ const CarList: React.FC = () => {
   let secondArray = cars.slice(arrayLength / 2, arrayLength);
 
   useEffect(() => {
-    onGet('http://localhost:1337/api/car-list').then(({ carList }) => {
+    onGet('https://carfree.onrender.com/api/car-list').then(({ carList }) => {
       setCarList(carList);
     });
   }, []);
