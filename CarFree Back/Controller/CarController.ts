@@ -60,7 +60,6 @@ const validateCar: UpdateCarInfo['validateCar'] = (car) => {
 
 const newCar = async (req: any, res: any) => {
   const car: UpdateCarInfo['fetchedCar'] = req.body;
-  console.log(validateCar(car));
 
   if (validateCar(car)) {
     try {
@@ -103,9 +102,9 @@ const updateCarInfo: UpdateCarInfo['carInfoFunc'] = (
   if (companyTime > currentTime) message = 'companyTime > currentTime';
   else if (companyTime < -3600000) message = 'companyTime < 1970.01.01';
   if (year !== car.year && year !== undefined) {
-    if (year > 1900) {
+    if (year < 1900) {
       message = 'Year < 1900';
-    } else if (year < currentYear) {
+    } else if (year > currentYear) {
       message = 'Year > current year';
     } else {
       car.year = year;
@@ -124,13 +123,9 @@ const updateCar = async (req: any, res: any) => {
   const { _id } = req.params;
   const updateDate = new Date(Date.now());
   let car: UpdateCarInfo['car'] | null = await Car.findById(_id);
-  let {
-    brand,
-    year,
-    model,
-    milage,
-    createDate: companyDate,
-  }: UpdateCarInfo['car'] = req.body;
+  let { brand, year, model, milage, companyDate }: UpdateCarInfo['car'] =
+    req.body;
+
   let newCar: string | UpdateCarInfo['car'] = '';
   const updateDates = car?.updateDates;
   updateDates?.push(updateDate);
@@ -139,15 +134,16 @@ const updateCar = async (req: any, res: any) => {
     newCar = updateCarInfo(car, companyDate, brand, model, year, milage);
     if (typeof newCar !== 'string') {
       await Car.findOneAndUpdate({ _id }, car);
+      const carList = await Car.find();
+      res.json({ message: 'Dane zostały zmienione', carList, status: 200 });
+    } else {
+      res.status(400).json({ message: 'Złe dane', status: 400, newCar });
     }
-  } else if (newCar) {
+  } else {
     res
       .status(400)
       .json({ message: 'Nie mozna znaleźć samochodu', status: 400, newCar });
   }
-
-  const carList = await Car.find();
-  res.json({ message: 'Dane zostały zmienione', carList });
 };
 
 const deleteCar = async (req: any, res: any) => {
